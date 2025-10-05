@@ -1,16 +1,55 @@
 ---
+import Layout from '../layouts/Layout.astro';
+import FeaturedPost from '../components/FeaturedPost.astro';
+import LatestProjectCard from '../components/LatestProjectCard.astro';
+import PostCard from '../components/PostCard.astro';
+import { getCollection } from 'astro:content';
 
+// 1. Obtenemos todos los posts de ambas colecciones
+const allBlogPosts = await getCollection('blog');
+const allProjectPosts = await getCollection('project');
+
+// 2. Unimos y ordenamos todos los posts por fecha para el feed principal
+const allPosts = [...allBlogPosts, ...allProjectPosts].sort(
+  (a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()
+);
+
+// 3. Determinamos qué posts mostrar en cada sección
+const featuredPost = allPosts[0]; // El post más reciente de todos
+const latestProjectPost = allProjectPosts.sort( // El log de proyecto más reciente
+  (a, b) => new Date(b.data.publishDate).valueOf() - new Date(a.data.publishDate).valueOf()
+)[0];
+const otherPosts = allPosts.slice(1, 4); // Los siguientes 3 posts más recientes
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Home | emilioacevedo.dev">
+	<main>
+		<!-- Post Destacado -->
+		<div class="mb-12 md:mb-16">
+			<h2 class="font-heading uppercase text-3xl font-bold mb-4 text-glow-cyan">// Latest Log</h2>
+			{featuredPost && <FeaturedPost post={featuredPost} />}
+		</div>
+
+		<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+			<!-- Columna de Proyecto y Otros Posts -->
+			<div class="lg:col-span-2">
+				<!-- Último Avance del Proyecto -->
+				<div class="mb-12 md:mb-16">
+					<h2 class="font-heading uppercase text-3xl font-bold mb-4 text-glow-cyan">// Project S Transmission</h2>
+					{latestProjectPost && <LatestProjectCard post={latestProjectPost} />}
+				</div>
+			</div>
+
+			<!-- Columna de "Otros Posts" (sidebar) -->
+			<div class="lg:col-span-1">
+				<h2 class="font-heading uppercase text-3xl font-bold mb-4 text-glow-cyan">// Archive</h2>
+				<div class="space-y-8">
+					{otherPosts.map(post => (
+						<PostCard post={post} />
+					))}
+				</div>
+			</div>
+		</div>
+	</main>
+</Layout>
+

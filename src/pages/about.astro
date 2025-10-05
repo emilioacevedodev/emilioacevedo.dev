@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SocialIcon from '../components/SocialIcon.astro';
+
+const technicalArsenal = [
+    { name: 'JavaScript / TypeScript', level: 'Expert' },
+    { name: 'Node.js', level: 'Expert' },
+    { name: 'C# / .NET', level: 'Expert' },
+    { name: 'SQL & Databases', level: 'Expert' },
+    { name: 'System Architecture', level: 'Expert' },
+    { name: 'Cloud (AWS/Azure)', level: 'Proficient' },
+    { name: 'Python / Go', level: 'Proficient' },
+    { name: 'Astro / Frontend FWs', level: 'Intermediate' },
+    { name: 'Blender / Three.js', level: 'Beginner' },
+];
+---
+<Layout title="About | emilioacevedo.dev">
+    <main>
+        <h1 class="font-heading uppercase text-4xl md:text-5xl font-bold mb-12 text-glow-cyan">// Engineer's Spec Sheet</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+            <!-- Columna de la Imagen -->
+            <div class="md:col-span-1 flex justify-center">
+                <div class="w-64 h-64 rounded-full overflow-hidden blueprint-border p-2">
+                    <img 
+                        src="/profile-pic.jpg" 
+                        alt="A photo of Emilio Acevedo"
+                        class="w-full h-full object-cover rounded-full"
+                    />
+                </div>
+            </div>
+
+            <!-- Columna de Texto -->
+            <div class="md:col-span-2">
+                <h2 class="font-heading uppercase text-3xl font-bold text-glow-cyan mb-4">// BIO</h2>
+                <div class="font-body text-text-color/80 space-y-4 text-lg">
+                    <p>
+                        I'm Emilio Acevedo, a Senior Software Engineer with over two decades of experience in building robust, scalable, and mission-critical applications. My career has been forged in the world of complex backend systems, massive data processes, and enterprise architecture.
+                    </p>
+                    <p>
+                        Now, I'm channeling that experience into a new challenge: mastering the world of 3D graphics on the web. This blog is the public chronicle of that journey, from zero to a fully interactive 3D world.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Arsenal Técnico -->
+        <div class="mt-16">
+            <h2 class="font-heading uppercase text-3xl font-bold text-glow-cyan mb-8">// Technical Arsenal</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {technicalArsenal.map(skill => (
+                    <div class="blueprint-card p-4">
+                        <p class="font-heading uppercase text-lg">{skill.name}</p>
+                        <p class="text-accent-cyan/80 text-sm">{skill.level}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </main>
+</Layout>
+

@@ -1,0 +1,47 @@
+---
+// src/components/Header.astro
+
+// Obtenemos la ruta de la página actual, ej: '/blog' o '/about'
+const pathname = Astro.url.pathname;
+
+// Definimos nuestros enlaces de navegación en un array para manejarlos más fácil
+const navLinks = [
+    { href: '/', text: 'Home' },
+    { href: '/blog', text: 'Blog' },
+    { href: '/project', text: 'Project' },
+    { href: '/about', text: 'About' },
+];
+---
+<header class="font-heading uppercase mb-8 md:mb-12">
+    <div class="border-2 border-accent-cyan/50 p-4 flex justify-between items-center">
+        <!-- Logo -->
+        <a href="/" class="text-xl md:text-2xl font-bold hover:text-accent-cyan transition-colors duration-300 text-glow-cyan">
+            <span class="text-accent-cyan">&#123;</span> emilioacevedo.dev <span class="text-accent-cyan">&#125;</span>
+        </a>
+
+        <!-- Navegación -->
+        <nav class="hidden md:flex items-center space-x-6 text-lg">
+            {navLinks.map(link => {
+                // Comprobamos si el enlace es la página activa
+                const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
+                return (
+                    <a 
+                        href={link.href} 
+                        class:list={[
+                            "hover:text-accent-cyan transition-colors duration-300",
+                            { "text-accent-cyan text-glow-cyan": isActive } // Aplicamos la clase si está activo
+                        ]}
+                    >
+                        {link.text}
+                    </a>
+                )
+            })}
+        </nav>
+
+        <!-- Menú Móvil (placeholder) -->
+        <div class="md:hidden">
+            <button class="text-2xl">[&#9776;]</button>
+        </div>
+    </div>
+</header>
+

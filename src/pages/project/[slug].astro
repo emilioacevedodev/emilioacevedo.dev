@@ -1,0 +1,57 @@
+---
+// src/pages/project/[slug].astro
+import Layout from '../../layouts/Layout.astro';
+import { type CollectionEntry, getCollection } from 'astro:content';
+import Comments from '../../components/Comments.astro'; // Importamos el componente
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('project');
+  return allPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+type Props = {
+  post: CollectionEntry<'project'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={post.data.title}>
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <article>
+            <!-- Cabecera del Post -->
+            <div class="mb-8 text-center">
+                <p class="font-heading uppercase text-sm text-accent-cyan mb-2">[ {post.data.category} ]</p>
+                <h1 class="font-heading uppercase text-4xl md:text-5xl font-bold mb-4 text-glow-cyan">
+                    {post.data.title}
+                </h1>
+                <p class="text-text-color/80">
+                    {new Date(post.data.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </p>
+            </div>
+
+            <!-- Imagen Destacada -->
+            <img 
+                src={post.data.heroImage} 
+                alt={`Cover image for ${post.data.title}`}
+                class="w-full h-auto max-h-[500px] object-cover rounded-md mb-8 blueprint-border"
+            />
+
+            <!-- Contenido del Post -->
+            <div class="prose prose-custom max-w-none">
+                <Content />
+            </div>
+        </article>
+
+        <!-- Sección de Comentarios -->
+        <section class="mt-16 pt-8 border-t-2 border-accent-cyan/20">
+            <h2 class="font-heading uppercase text-3xl font-bold mb-8 text-glow-cyan">// Discussion</h2>
+            <Comments />
+        </section>
+
+    </main>
+</Layout>

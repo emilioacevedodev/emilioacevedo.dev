@@ -1,0 +1,15 @@
+---
+// src/components/SocialIcon.astro
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+    platform: string;
+    url: string;
+}
+
+const { platform, url } = Astro.props;
+---
+<a href={url} target="_blank" rel="noopener noreferrer" class="text-accent-cyan/70 hover:text-accent-cyan hover:scale-110 transition-all duration-300">
+    <span class="sr-only">{platform}</span>
+    <Icon name={`simple-icons:${platform}`} class="w-7 h-7" />
+</a>

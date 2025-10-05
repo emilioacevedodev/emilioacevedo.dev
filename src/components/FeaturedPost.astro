@@ -1,0 +1,34 @@
+---
+// src/components/FeaturedCard.astro
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+    post: CollectionEntry<'blog'> | CollectionEntry<'project'>;
+}
+const { post } = Astro.props;
+// Determinamos si el post viene de la colección 'blog' o 'project'
+const collection = post.collection; 
+---
+<a href={`/${collection}/${post.slug}`} class="block group blueprint-card p-6">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
+        <!-- Imagen -->
+        <div class="md:col-span-2 overflow-hidden rounded-md">
+            <img 
+                src={post.data.heroImage} 
+                alt={`Cover image for ${post.data.title}`}
+                class="w-full h-full object-cover aspect-video group-hover:scale-105 transition-transform duration-300"
+            />
+        </div>
+        <!-- Contenido de Texto -->
+        <div class="md:col-span-3">
+            <p class="font-heading uppercase text-sm text-accent-cyan mb-2">[ {post.data.category} ]</p>
+            <h2 class="font-heading uppercase text-3xl md:text-4xl font-bold group-hover:text-accent-cyan transition-colors duration-300 leading-tight">
+                {post.data.title}
+            </h2>
+            <p class="text-text-color/80 mt-4 text-lg">
+                {post.data.description}
+            </p>
+        </div>
+    </div>
+</a>
+

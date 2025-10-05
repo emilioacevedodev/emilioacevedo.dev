@@ -1,0 +1,25 @@
+---
+// src/components/PostCard.astro
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+    post: CollectionEntry<'blog'> | CollectionEntry<'project'>;
+}
+const { post } = Astro.props;
+const collection = post.collection;
+---
+<a href={`/${collection}/${post.slug}`} class="group blueprint-card p-6 h-full flex flex-col">
+    <div class="flex-grow">
+        <p class="font-heading uppercase text-sm text-accent-cyan mb-2">[ {post.data.category} ]</p>
+        <h3 class="font-heading uppercase text-2xl font-bold mb-2 group-hover:text-accent-cyan transition-colors duration-300">
+            {post.data.title}
+        </h3>
+        <p class="text-text-color/80 font-body">
+            {post.data.description}
+        </p>
+    </div>
+    <div class="mt-4 text-accent-cyan/60 group-hover:text-accent-cyan transition-colors duration-300">
+        Read More &rarr;
+    </div>
+</a>
+

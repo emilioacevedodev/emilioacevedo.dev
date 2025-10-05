@@ -1,0 +1,90 @@
+---
+import { SEO } from 'astro-seo';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { 
+	title, 
+	description = "The personal blog of Emilio Acevedo, a Senior Software Engineer chronicling a journey into 3D web development." 
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		
+		<SEO
+			title={title}
+			description={description}
+			canonical="https://emilioacevedo.dev"
+			openGraph={{
+				basic: {
+					title: title,
+					type: 'website',
+					image: '/og-image.png',
+					url: Astro.url,
+				},
+			}}
+			twitter={{
+				creator: '@mylohdev',
+			}}
+		/>
+
+		<link rel="alternate" type="application/rss+xml" title="RSS Feed for emilioacevedo.dev" href="/rss.xml" />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Jura:wght@400;700&display=swap" rel="stylesheet">
+		
+		<style is:global>
+			body {
+				font-family: 'Roboto Mono', monospace;
+				background-color: #0d1b2a;
+				color: #e0f2ff;
+				background-image:
+					radial-gradient(ellipse at 50% 0%, rgba(0, 255, 255, 0.15), transparent 50%),
+					linear-gradient(rgba(0, 255, 255, 0.07) 1px, transparent 1px),
+					linear-gradient(90deg, rgba(0, 255, 255, 0.07) 1px, transparent 1px);
+				background-size: 25px 25px;
+			}
+			.text-glow-cyan {
+				text-shadow:
+					0 0 5px theme('colors.accent-cyan'),
+					0 0 10px theme('colors.accent-cyan'),
+					0 0 20px theme('colors.accent-cyan');
+			}
+			/* Estilos personalizados para el contenido de los posts */
+			.prose-custom {
+				--tw-prose-body: theme('colors.text-color');
+				--tw-prose-headings: theme('colors.text-color');
+				--tw-prose-links: theme('colors.accent-cyan');
+				--tw-prose-bold: theme('colors.text-color');
+				--tw-prose-code: theme('colors.accent-magenta');
+				--tw-prose-bullets: theme('colors.accent-cyan');
+			}
+			.prose-custom h2, .prose-custom h3 {
+				font-family: 'Jura', sans-serif;
+				text-transform: uppercase;
+			}
+		</style>
+	</head>
+	<body class="p-4 md:p-8">
+		<div class="max-w-7xl mx-auto">
+			<Header />
+			<main>
+				<slot />
+			</main>
+			<Footer />
+		</div>
+	</body>
+</html>
+

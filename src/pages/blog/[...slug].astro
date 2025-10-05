@@ -1,0 +1,54 @@
+---
+// src/pages/blog/[...slug].astro
+import Layout from '../../layouts/Layout.astro';
+// CORRECCIÓN: Importamos 'CollectionEntry' explícitamente como un tipo.
+import { getCollection, type CollectionEntry } from 'astro:content';
+import Comments from '../../components/Comments.astro'; // Importamos el componente
+
+// 1. Esta función le dice a Astro qué páginas generar en tiempo de construcción.
+//    Ahora usa 'getCollection', el método moderno y recomendado.
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog');
+  return allPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+// 2. Definimos el tipo de las props que recibe esta página
+type Props = {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render(); // El método .render() sí funciona con getCollection
+---
+
+<Layout title={post.data.title}>
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <article>
+            <!-- Cabecera del Post -->
+            <div class="mb-8 text-center">
+                <p class="text-blue-400 font-bold">{post.data.category}</p>
+                <h1 class="text-5xl font-bold text-gray-100 mt-2">{post.data.title}</h1>
+                <p class="text-gray-400 mt-4">{new Date(post.data.publishDate).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+            </div>
+
+            <!-- Imagen Destacada -->
+            <img src={post.data.heroImage} alt={`Imagen para ${post.data.title}`} class="w-full h-96 object-cover rounded-lg mb-8" />
+
+            <!-- Contenido del Post -->
+            <div class="prose prose-invert prose-lg max-w-none">
+                <Content />
+            </div>
+        </article>
+
+        <!-- Sección de Comentarios -->
+        <section class="mt-16 pt-8 border-t-2 border-accent-cyan/20">
+            <h2 class="font-heading uppercase text-3xl font-bold mb-8 text-glow-cyan">// Discussion</h2>
+            <Comments />
+        </section>
+
+    </main>
+</Layout>
+

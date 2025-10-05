@@ -1,0 +1,23 @@
+---
+// src/components/Footer.astro
+import SocialIcon from './SocialIcon.astro';
+
+const currentYear = new Date().getFullYear();
+---
+<footer class="font-heading uppercase mt-12 md:mt-20">
+    <div class="border-2 border-accent-cyan/50 p-6 flex flex-col md:flex-row justify-between items-center gap-6">
+        <!-- Copyright -->
+        <div class="text-center md:text-left">
+            <p>&copy; {currentYear} EMILIOACEVEDO.DEV</p>
+            <p class="text-sm opacity-75">// ALL RIGHTS RESERVED</p>
+        </div>
+        
+        <!-- Iconos Sociales -->
+        <div class="flex items-center space-x-4">
+            <SocialIcon platform="github" url="https://github.com/emilioacevedodev" />
+            <SocialIcon platform="linkedin" url="https://www.linkedin.com/in/emilioacevedodev/" />
+            <SocialIcon platform="x" url="https://x.com/eacevedodev" />
+            <SocialIcon platform="devdotto" url="https://dev.to/mylohdev" />            
+        </div>
+    </div>
+</footer>
