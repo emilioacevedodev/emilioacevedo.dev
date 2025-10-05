@@ -1,10 +1,7 @@
 ---
 // src/components/Header.astro
-
-// Obtenemos la ruta de la página actual, ej: '/blog' o '/about'
 const pathname = Astro.url.pathname;
 
-// Definimos nuestros enlaces de navegación en un array para manejarlos más fácil
 const navLinks = [
     { href: '/', text: 'Home' },
     { href: '/blog', text: 'Blog' },
@@ -12,24 +9,23 @@ const navLinks = [
     { href: '/about', text: 'About' },
 ];
 ---
-<header class="font-heading uppercase mb-8 md:mb-12">
+<header class="font-heading uppercase mb-8 md:mb-12 relative">
     <div class="border-2 border-accent-cyan/50 p-4 flex justify-between items-center">
         <!-- Logo -->
         <a href="/" class="text-xl md:text-2xl font-bold hover:text-accent-cyan transition-colors duration-300 text-glow-cyan">
             <span class="text-accent-cyan">&#123;</span> emilioacevedo.dev <span class="text-accent-cyan">&#125;</span>
         </a>
 
-        <!-- Navegación -->
+        <!-- Navegación de Escritorio -->
         <nav class="hidden md:flex items-center space-x-6 text-lg">
             {navLinks.map(link => {
-                // Comprobamos si el enlace es la página activa
                 const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
                 return (
                     <a 
                         href={link.href} 
                         class:list={[
                             "hover:text-accent-cyan transition-colors duration-300",
-                            { "text-accent-cyan text-glow-cyan": isActive } // Aplicamos la clase si está activo
+                            { "text-accent-cyan text-glow-cyan": isActive }
                         ]}
                     >
                         {link.text}
@@ -38,10 +34,39 @@ const navLinks = [
             })}
         </nav>
 
-        <!-- Menú Móvil (placeholder) -->
+        <!-- Botón del Menú Móvil -->
         <div class="md:hidden">
-            <button class="text-2xl">[&#9776;]</button>
+            <button id="menu-btn" class="text-2xl z-50 relative">
+                <span id="hamburger-icon">&#9776;</span>
+                <span id="close-icon" class="hidden">&times;</span>
+            </button>
         </div>
     </div>
+
+    <!-- Menú Móvil (inicialmente oculto) -->
+    <div id="mobile-menu" class="hidden md:hidden absolute top-full left-0 w-full bg-base/95 backdrop-blur-sm border-x-2 border-b-2 border-accent-cyan/50">
+        <nav class="flex flex-col items-center text-xl space-y-6 py-8">
+            {navLinks.map(link => (
+                <a href={link.href} class="hover:text-accent-cyan transition-colors duration-300">{link.text}</a>
+            ))}
+        </nav>
+    </div>
 </header>
+
+<script>
+    // Pequeño script para manejar la apertura y cierre del menú móvil
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const hamburgerIcon = document.getElementById('hamburger-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    // Añadimos una comprobación para asegurarnos de que todos los elementos existen
+    if (menuBtn && mobileMenu && hamburgerIcon && closeIcon) {
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            hamburgerIcon.classList.toggle('hidden');
+            closeIcon.classList.toggle('hidden');
+        });
+    }
+</script>
 
